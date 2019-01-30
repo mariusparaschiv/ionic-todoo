@@ -4,9 +4,10 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { HttpClientModule } from '@angular/common/http'; 
-
+import { AngularFireModule } from 'angularfire2';
 import { MyApp } from './app.component';
 import { TodosProvider } from '../providers/todos.service';
+import { FIREBASE_CONFIG } from './app.firebase.confing';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { TodosProvider } from '../providers/todos.service';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    HttpClientModule
+    HttpClientModule,
+    AngularFireModule.initializeApp(FIREBASE_CONFIG),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
