@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, NavController, ToastController } from 'ionic-angular';
 import { TodosProvider } from '../../providers/todos.service'
 import { TodoItem } from '../../models/todoitem.interface';
-
+import { AngularFireAuth } from 'angularfire2/auth'
 /**
  * Generated class for the HomePage page.
  *
@@ -26,7 +26,8 @@ export class HomePage {
 
   public items:TodoItem[] = [];
 
-  constructor(public todoService: TodosProvider, private navCtrl: NavController) {
+  constructor(private afAuth:AngularFireAuth, private toast: ToastController,
+     public todoService: TodosProvider, private navCtrl: NavController) {
     this.getTodos();
   }
 
@@ -41,6 +42,21 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.todoService.getTodoItems();
+    this.afAuth.authState.subscribe(data => {
+      if(data && data.email && data.uid) {
+        this.toast.create( {
+          message: `Welcome to Todo App ,${data.email}`,
+          duration: 3000
+        }).present();
+      }
+      else {
+        this.toast.create( {
+          message: `Could not found authentication details`,
+          duration: 3000
+        }).present();
+      }
+      
+    })
   }
 
   completeTodo(event) {
