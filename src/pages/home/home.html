@@ -1,0 +1,38 @@
+<!--
+  Generated template for the HomePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Home</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <button ion-button block color="secondary" (click)="goToAddTodo()">Add new TODO</button>
+  
+    <p>Priority:</p>
+    <ion-row justify-content-around>
+      <ion-chip (click)="clickFilters('all')" [color]="filter.all ? 'secondary' : 'grey'">
+        <ion-label>All</ion-label>
+      </ion-chip>
+      <ion-chip (click)="clickFilters('low')" [color]="filter.low ? 'low' : 'grey'">
+        <ion-label>Low</ion-label>
+      </ion-chip>
+      <ion-chip (click)="clickFilters('medium')" [color]="filter.medium ? 'medium' : 'grey'">
+        <ion-label>Medium</ion-label>
+      </ion-chip>
+      <ion-chip (click)="clickFilters('high')" [color]="filter.high ? 'high' : 'grey'">
+        <ion-label>High</ion-label>
+      </ion-chip>
+    </ion-row>
+  
+    <todo-item *ngFor="let item of items" [item]="item" (complete)="completeTodo($event)" (delete)="deleteTodo($event)"></todo-item>
+
+
+  </ion-content>

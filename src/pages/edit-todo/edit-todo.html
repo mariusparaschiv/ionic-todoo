@@ -1,0 +1,34 @@
+<!--
+  Generated template for the EditTodoPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>editTodoPage</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-item>
+        <ion-label stacked>Text</ion-label>
+        <ion-input type="text" [(ngModel)]="item.title"></ion-input>
+      </ion-item>
+      <ion-list radio-group>
+        <ion-item>
+          <ion-label>Priority</ion-label>
+          <ion-select [(ngModel)]="item.priority">
+            <ion-option value="low" selected="true">Low</ion-option>
+            <ion-option value="medium">Medium</ion-option>
+            <ion-option value="high">High</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+      <button ion-button color="primary" block (click)="saveEdits(item.title, item.priority)">Save edits</button>
+      <button ion-button color="secondary" block (click)="completeTodo()">Complete Todo</button>
+      <button ion-button clear block (click)="cancelEdits()">Cancel</button>
+</ion-content>

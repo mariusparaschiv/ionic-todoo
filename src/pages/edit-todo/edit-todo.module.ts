@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { TodoMainPage } from './todo-main';
+import { EditTodoPage } from './edit-todo';
 
 @NgModule({
   declarations: [
-    TodoMainPage,
+    EditTodoPage,
   ],
   imports: [
-    IonicPageModule.forChild(TodoMainPage),
+    IonicPageModule.forChild(EditTodoPage),
   ],
 })
-export class TodoMainPageModule {}
+export class EditTodoPageModule {}
