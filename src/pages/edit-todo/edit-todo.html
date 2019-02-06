@@ -16,8 +16,9 @@
 <ion-content padding>
     <ion-item>
         <ion-label stacked>Text</ion-label>
-        <ion-input type="text" [(ngModel)]="item.title"></ion-input>
+        <ion-input #user="ngModel" type="text" (change)="spaceRemover(item.title)" (onblur)="checkSpace(item.title)" [(ngModel)]="item.title"></ion-input>
       </ion-item>
+      <div *ngIf="checkSpace(user.touched, item.title) && textState" class="invalid">*todo required</div>
       <ion-list radio-group>
         <ion-item>
           <ion-label>Priority</ion-label>
@@ -28,6 +29,10 @@
           </ion-select>
         </ion-item>
       </ion-list>
+      <ion-item>
+          <ion-label>Deadline</ion-label>
+          <ion-datetime display-format="MMM DD, YYYY HH:mm" [(ngModel)]="item.deadline" ></ion-datetime>
+        </ion-item>
       <button ion-button color="primary" block (click)="saveEdits(item.title, item.priority)">Save edits</button>
       <button ion-button color="secondary" block (click)="completeTodo()">Complete Todo</button>
       <button ion-button clear block (click)="cancelEdits()">Cancel</button>

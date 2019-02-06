@@ -1,5 +1,6 @@
 import { Component,  Input, Output, EventEmitter } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import * as moment from 'moment';
 
 /**
  * Generated class for the TodoItemComponent component.
@@ -15,22 +16,22 @@ export class TodoItemComponent {
 
   constructor(private navCtrl: NavController) {
   }
-
   boo: boolean = true;
   @Input() item:any;
   @Output() complete: EventEmitter <any> = new EventEmitter();
   @Output() delete: EventEmitter <any> = new EventEmitter();
-  
+
+  formatTime(deadline: number ): string {
+    return moment(deadline).format('MM/DD/YYYY');
+  }
+
   completeTodo(): void {
-    console.log('completeTodo pressed')
     this.complete.emit(this.item);
   }
   editTodo(): void {
-    console.log('editTodo pressed');
     this.navCtrl.push('EditTodoPage', {item: this.item});
   }
   deleteTodo(): void {
-    console.log('deleteTodo pressed')
     this.delete.emit(this.item);
   }
 

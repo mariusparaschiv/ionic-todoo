@@ -3,6 +3,7 @@ import { IonicPage, NavController, ToastController } from 'ionic-angular';
 import { TodosProvider } from '../../providers/todos.service'
 import { TodoItem } from '../../models/todoitem.interface';
 import { AngularFireAuth } from 'angularfire2/auth'
+import { AuthService } from '../../providers/myAuth.service';
 /**
  * Generated class for the HomePage page.
  *
@@ -27,21 +28,28 @@ export class HomePage {
   public items:TodoItem[] = [];
 
   constructor(private afAuth:AngularFireAuth, private toast: ToastController,
-     public todoService: TodosProvider, private navCtrl: NavController) {
-    this.getTodos();
+     public todoService: TodosProvider, private navCtrl: NavController,
+     private auth: AuthService) {      
   }
 
-  getTodos() {
-    this.items = this.todoService.filteredItems(this.filter);
+  logout() {
+    this.navCtrl.setRoot('LoginPage');
+    this.auth.logout();
+  }
+
+  ionViewDidEnter() {
+    this.getTodos();
+  }
+ async getTodos() {
+  await this.todoService.getTodoItems();
+    this.items = this.todoService.filteredItems(this.filter);  
    }
   
   goToAddTodo(): void{
-    console.log('goToAddTodo pressed');
     this.navCtrl.push('AddTodoPage');
   }
 
   ionViewDidLoad() {
-    this.todoService.getTodoItems();
     this.afAuth.authState.subscribe(data => {
       if(data && data.email && data.uid) {
         this.toast.create( {
@@ -54,9 +62,11 @@ export class HomePage {
           message: `Could not found authentication details`,
           duration: 3000
         }).present();
+      this.navCtrl.setRoot('LoginPage');
       }
-      
     })
+    this.getTodos();
+
   }
 
   completeTodo(event) {
@@ -65,6 +75,7 @@ export class HomePage {
 
   deleteTodo(event) {
     this.todoService.deleteTodo(event);
+    this.getTodos();
   }
   clickFilters(value) {
     switch (value) {
@@ -88,15 +99,18 @@ export class HomePage {
   }
   checkAll() {
     if (this.filter.all === true) {
-      this.filter.low = false
-      this.filter.medium = false
-      this.filter.high = false
+      this.filter.low = false;
+      this.filter.medium = false;
+      this.filter.high = false;
     }
     this.items = this.todoService.filteredItems(this.filter)
   }
   check() {
     if (this.filter.low === true || this.filter.medium === true || this.filter.high === true) {
-      this.filter.all = false
+      this.filter.all = false;
+    }
+    if(this.filter.low === false && this.filter.medium === false && this.filter.high === false) {
+      this.filter.all = true;
     }
     this.items = this.todoService.filteredItems(this.filter)
   }

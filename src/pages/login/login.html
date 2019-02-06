@@ -6,23 +6,28 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Login</ion-title>
-  </ion-navbar>
+    <ion-navbar hideBackButton>
+        <ion-title>Login</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content  
+padding>
   <ion-item>
     <ion-label floating>Email adress</ion-label>
-    <ion-input type="text" [(ngModel)]="user.email"></ion-input>
+    <ion-input type="text" #email="ngModel"  (blur)="emailCheck(user.email)" [(ngModel)]="user.email"></ion-input>
   </ion-item>
+  <div *ngIf="!emailCheck(email.touched, user.email) && emailState" class="invalid">*email is invalid</div>
+
   <ion-item>
     <ion-label floating>Password</ion-label>
-    <ion-input type="password" [(ngModel)]="user.password"></ion-input>
+    <ion-input type="password" #pass (blur)="passwordCheck(user.password)" [(ngModel)]="user.password"></ion-input>
   </ion-item>
-
-  <button ion-button (click)="login(user)">Login</button>
-  <button ion-button color="light" (click)="register()">Register</button>
+  <div *ngIf="!passwordCheck(pass.touched, user.password)  && passState" class="invalid">The password must contain between 3-10 characters</div>
+  <div class="buttons">
+    <button ion-button (click)="login(user)">Login</button>
+    <button ion-button color="light" (click)="register()">Register</button> 
+  </div>
 </ion-content>

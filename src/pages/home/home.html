@@ -5,10 +5,12 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>Home</ion-title>
+  <ion-navbar hideBackButton>
+      <ion-title>Home</ion-title>
+      <button style="margin: 0 0 0 auto;
+      display: block;" ion-button (click)="logout()">Logout</button>
   </ion-navbar>
+
 
 </ion-header>
 
@@ -18,20 +20,20 @@
   
     <p>Priority:</p>
     <ion-row justify-content-around>
-      <ion-chip (click)="clickFilters('all')" [color]="filter.all ? 'secondary' : 'grey'">
+      <ion-chip [ngClass]="filter.all ? 'alla' : 'allb'" (click)="clickFilters('all')" >
         <ion-label>All</ion-label>
       </ion-chip>
-      <ion-chip (click)="clickFilters('low')" [color]="filter.low ? 'low' : 'grey'">
+      <ion-chip [ngClass]="filter.low ? 'lowa' : 'lowb'" (click)="clickFilters('low')" >
         <ion-label>Low</ion-label>
       </ion-chip>
-      <ion-chip (click)="clickFilters('medium')" [color]="filter.medium ? 'medium' : 'grey'">
+      <ion-chip [ngClass]="filter.medium ? 'mediuma' : 'mediumb'" (click)="clickFilters('medium')">
         <ion-label>Medium</ion-label>
       </ion-chip>
-      <ion-chip (click)="clickFilters('high')" [color]="filter.high ? 'high' : 'grey'">
+      <ion-chip [ngClass]="filter.high ? 'higha' : 'highb'" (click)="clickFilters('high')" >
         <ion-label>High</ion-label>
       </ion-chip>
     </ion-row>
-  
+  <br>
     <todo-item *ngFor="let item of items" [item]="item" (complete)="completeTodo($event)" (delete)="deleteTodo($event)"></todo-item>
 
 

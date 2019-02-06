@@ -17,11 +17,9 @@
   <form>
     <ion-item>
       <!-- <ion-label stacked>Todo</ion-label> -->
-      <ion-textarea type="text" name="text" [(ngModel)]="textTodo" required placeholder="type your todo here*"></ion-textarea>
+      <ion-textarea #user="ngModel" type="text" name="text" [(ngModel)]="textTodo" (onblur)="checkSpace(textTodo)" required placeholder="type your todo here*"></ion-textarea>
     </ion-item>
-    <ion-item *ngIf="checkSpace(textTodo)" class="requiredText">
-      * Text required
-    </ion-item>
+        <div *ngIf="checkSpace(user.touched, textTodo) && textState" class="invalid">*todo required</div>
     <ion-list radio-group>
       <ion-item>
         <ion-label>Priority</ion-label>
@@ -32,17 +30,12 @@
         </ion-select>
       </ion-item>
     </ion-list>
-    <!-- <ion-item>
+    <ion-item>
       <ion-label>Deadline</ion-label>
-      <ion-datetime name="deadline" display-format="MMM DD, YYYY HH:mm" [(ngModel)]="deadline" required></ion-datetime>
-    </ion-item> -->
-    <!-- <ion-item *ngIf="checkDeadline(deadline)" class="requiredText">
-      * Deadline required
-    </ion-item> -->
-    <button ion-button color="secondary" block (click)="addTodoNext(textTodo, priority)" type="submit" [disabled]="checkValid()">Save
-      and add another</button>
-    <button ion-button color="primary" block (click)="addTodoExit(textTodo, priority)" type="submit" [disabled]="checkValid()">Save
-      and exit</button>
-    <button ion-button clear block (click)="cancelAddTodo()">Cancel</button>
+      <ion-datetime name="deadline" display-format="MMM DD, YYYY H:mm" [(ngModel)]="deadline" required></ion-datetime>
+    </ion-item> 
+    <br>
+    <button ion-button color="secondary" block (click)="addTodoNext(textTodo, priority, deadline)" type="submit" [disabled]="checkValid()">Save</button>
+    <button ion-button color="primary" block (click)="cancelAddTodo()" type="submit">Back</button>
   </form>
 </ion-content>

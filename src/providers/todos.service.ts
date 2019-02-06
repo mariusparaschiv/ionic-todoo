@@ -1,6 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { TodoItem } from '../models/todoitem.interface'
+import { TodoItem } from '../models/todoitem.interface';
+import { Storage } from '@ionic/storage';
+import { HttpClientModule } from '@angular/common/http';
+import * as moment from 'moment';
 /*
   Generated class for the TodosProvider provider.
 
@@ -10,93 +12,85 @@ import { TodoItem } from '../models/todoitem.interface'
 @Injectable()
 export class TodosProvider {
 
-  constructor(public http: HttpClient) {
+  constructor(private storage: Storage, private Http: HttpClientModule) {
   }
 
-  TodoItems: TodoItem[] = [{
-    id: '1',
-    title: 'Todo A',
-    priority: 'low',
-    done: false
-  }, {
-     id: '2',
-     title: 'Todo B',
-     priority: 'medium',
-     done: false
-  }, {
-      id: '3',
-     title: 'Todo C',
-     priority: 'high',
-     done: true
-  }, {
-      id: '4',
-     title: 'Todo D',
-     priority: 'low',
-     done: true
-  }, {
-      id: '5',
-     title: 'Todo E',
-     priority: 'high',
-     done: false
-  }];
-  getTodoItems(): TodoItem[] {
-    // if (localStorage.getItem('todos')) {
-    //   this.TodoItems = JSON.parse(localStorage.getItem('todos'))
-    // }
-    return this.TodoItems;
+  TodoItems: TodoItem[] = [];
+async getTodoItems() {
+  try {
+  await this.storage.get('todos').then(value => {
+    if(this.TodoItems === null) {
+      this.TodoItems = [];
+    }
+      this.TodoItems = value;
+    })
+  } catch (error) {
+    console.log(error)
   }
-
-  updateItems(TodoItems: TodoItem[])  {
-    this.TodoItems = TodoItems;
   }
 
   completeTodo(item: TodoItem) {
     let itemFind = this.TodoItems.find(todo => todo.id === item.id)
     let index = this.TodoItems.indexOf(itemFind)
     this.TodoItems[index].done = true
-    console.log(this.TodoItems);
+    this.storage.set('todos', this.TodoItems);
   }
 
   deleteTodo(item: TodoItem) {
-    console.log(item)
     let itemFind = this.TodoItems.find(todo => todo.id === item.id)
     let index = this.TodoItems.indexOf(itemFind)
     this.TodoItems.splice(index, 1)
-    console.log(this.TodoItems);
-    // localStorage.setItem('TodoItems', JSON.stringify(this.TodoItems));
+    this.storage.set('todos', this.TodoItems);
   }
-  addTodoItem(todoTitle:string, todoPriority:string){
+  addTodoItem(todoTitle:string, todoPriority:string, deadline:number){
     const todo: TodoItem = {
       id: Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36),
       title: todoTitle,
       priority: todoPriority,
-      done: false
+      done: false,
+      time: new Date().getTime(),
+      deadline: deadline
+
+    }
+    if(this.TodoItems === null) {
+      this.TodoItems = [];
     }
     this.TodoItems.push(todo);
+    this.storage.set('todos', this.TodoItems);
 
   }
 
   editTodo(item: TodoItem) {
     let itemFind = this.TodoItems.find(todo => todo.id === item.id)
     let index = this.TodoItems.indexOf(itemFind)
-    this.TodoItems[index] = item
+    this.TodoItems[index] = item;
+    this.storage.set('todos', this.TodoItems);
   }
 
   filteredItems(value) {
-    let filteredTodos: TodoItem[] = [] 
-    filteredTodos = this.TodoItems.filter(todo => {
-      if (value.all === true) {
-        return true
-      } else if (value.high === true && todo.priority === 'high') {
-        return true 
-      } else if (value.medium === true && todo.priority === 'medium') {
-        return true 
-      } else if (value.low === true && todo.priority === 'low') {
-        return true 
-      }
-    })
-    return filteredTodos
+    let filteredTodos: TodoItem[] = [];
+try {
+    if(value) {
+
+      filteredTodos = this.TodoItems.filter(todo => {
+
+        if (value.all === true) {
+          return true
+        } else if (value.high === true && todo.priority === 'high') {
+          return true 
+        } else if (value.medium === true && todo.priority === 'medium') {
+          return true 
+        } else if (value.low === true && todo.priority === 'low') {
+          return true 
+        }
+      })
+
+    }
+    } catch (error) {
+      console.log(error)
+    }
+    if(this.filteredItems != null) {
+      return filteredTodos;
+    }
   }
-
-
 }

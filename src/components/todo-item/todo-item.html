@@ -1,16 +1,80 @@
-<ion-card>
+<!-- <ion-card>
   <ion-card-content *ngIf="item.done">
       <ion-card-content>
-          {{ item.title }} - {{ item.priority }}
+          <ion-row justify-content-around>
+              <ion-col size="3">
+                  {{ item.title }}
+              </ion-col>
+              <ion-col size="3">
+                  {{ item.priority }} 
+              </ion-col>
+            </ion-row>
       </ion-card-content >
-    <button ion-button color="complete">Completed</button>
+    <button ion-button color="completed">Completed</button>
+    <button ion-button color="danger" (click)="deleteTodo()">Remove</button>
   </ion-card-content>
   <ion-card-content *ngIf="!item.done">
       <ion-card-content>
-          {{ item.title }} - {{ item.priority }}
+        <ion-row justify-content-around>
+          <ion-col size="3">
+              {{ item.title }}
+          </ion-col>
+          <ion-col size="3">
+              {{ item.priority }} 
+          </ion-col>
+          <ion-col size="3">
+              Dedline: {{ item.deadline }} 
+          </ion-col>
+        </ion-row>
       </ion-card-content >
-      <button ion-button color="success" (click)="completeTodo()">Complete</button>
-      <button ion-button color="danger" (click)="deleteTodo()">Remove</button>
-      <button ion-button color="secondary" (click)="editTodo()">Edit</button>
-  </ion-card-content>
-</ion-card>
+      
+      
+  </ion-card-content> -->
+
+ <ion-list>
+   <ion-item-sliding #slider>
+     <ion-item *ngIf="item.done" text-center>
+        <ion-row justify-content-around>
+          <ion-col>
+              {{ item.title }}
+          </ion-col>
+          <ion-col>
+              {{formatTime(item.deadline)}}
+          </ion-col>
+          </ion-row>
+          <br>
+          <ion-row justify-content-center>
+              <ion-badge [color]="item.priority === 'high' ? 'primary' : (item.priority === 'medium' ? 'secondary' : 'danger')">
+                    {{ item.priority }} 
+              </ion-badge>
+          </ion-row>
+     </ion-item>
+      <ion-item-options side='right' *ngIf="item.done" >
+          <button ion-button color="completed">Completed</button>
+          <button ion-button color="danger" (click)="deleteTodo()">Remove</button>
+      </ion-item-options>
+
+      <ion-item *ngIf="!item.done" text-center>
+          <ion-row justify-content-around>
+            <ion-col>
+                {{ item.title }}
+            </ion-col>
+            <ion-col>
+                {{formatTime(item.deadline)}}
+            </ion-col>
+        </ion-row>
+        <br>
+        <ion-row justify-content-center>
+            <ion-badge [color]="item.priority === 'high' ? 'orange' : (item.priority === 'medium' ? 'primary' : 'danger')">
+                  {{ item.priority }} 
+            </ion-badge>
+        </ion-row>
+       </ion-item>
+        <ion-item-options side='right' *ngIf="!item.done" >
+            <button ion-button color="success" (click)="completeTodo()">Complete</button>
+            <button ion-button color="danger" (click)="deleteTodo()">Remove</button>
+            <button ion-button color="secondary" (click)="editTodo()">Edit</button>
+        </ion-item-options>
+    </ion-item-sliding>
+ </ion-list>
+

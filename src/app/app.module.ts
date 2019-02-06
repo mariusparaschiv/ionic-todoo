@@ -9,6 +9,8 @@ import { AngularFireAuthModule } from 'angularfire2/auth'
 import { MyApp } from './app.component';
 import { TodosProvider } from '../providers/todos.service';
 import { FIREBASE_CONFIG } from './app.firebase.confing';
+import { IonicStorageModule } from '@ionic/storage';
+import { AuthService } from '../providers/myAuth.service'
 
 @NgModule({
   declarations: [
@@ -19,7 +21,11 @@ import { FIREBASE_CONFIG } from './app.firebase.confing';
     IonicModule.forRoot(MyApp),
     HttpClientModule,
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    IonicStorageModule.forRoot({
+      name: 'todoService',
+      driverOrder: ['localstorage']
+    }),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -29,7 +35,8 @@ import { FIREBASE_CONFIG } from './app.firebase.confing';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    TodosProvider
+    TodosProvider,
+    AuthService
   ]
 })
 export class AppModule {}

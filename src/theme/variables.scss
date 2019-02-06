@@ -35,11 +35,14 @@ $app-direction: ltr;
 
 $colors: (
   primary:    #6699CC,
-  secondary:  #FF8C42,
+  secondary:  #2F1847,
   danger:     #FF3C38,
+  high:       #A23E48,
   light:      #070606,
   dark:       #222,
-  completed:  #FFF275
+  grey:       #ccc,
+  completed:  #FFF275,
+  orange:     #FF8C42
 );
 
 
@@ -84,6 +87,8 @@ $colors: (
 
 // Fonts
 // --------------------------------------------------
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,400i,600,600i,700|Source+Sans+Pro:400,600,700');
 
 @import "roboto";
 @import "noto-sans";
