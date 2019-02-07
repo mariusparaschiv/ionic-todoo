@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { TodoItem } from '../models/todoitem.interface';
 import { Storage } from '@ionic/storage';
 import { HttpClientModule } from '@angular/common/http';
-import * as moment from 'moment';
+// import * as moment from 'moment';
+import { of } from 'rxjs/observable/of';
+import { Observable } from 'rxjs';
 /*
   Generated class for the TodosProvider provider.
 
@@ -12,11 +14,11 @@ import * as moment from 'moment';
 @Injectable()
 export class TodosProvider {
 
-  constructor(private storage: Storage, private Http: HttpClientModule) {
+  constructor(private storage: Storage) {
   }
 
   TodoItems: TodoItem[] = [];
-async getTodoItems() {
+  async getTodoItems() {
   try {
   await this.storage.get('todos').then(value => {
     if(this.TodoItems === null) {
@@ -26,7 +28,11 @@ async getTodoItems() {
     })
   } catch (error) {
     console.log(error)
+    }
   }
+
+  injectTodos(): Observable <TodoItem[]> {
+    return of(this.TodoItems)
   }
 
   completeTodo(item: TodoItem) {
@@ -52,7 +58,7 @@ async getTodoItems() {
       deadline: deadline
 
     }
-    if(this.TodoItems === null) {
+        if(this.TodoItems === null) {
       this.TodoItems = [];
     }
     this.TodoItems.push(todo);
@@ -67,11 +73,8 @@ async getTodoItems() {
     this.storage.set('todos', this.TodoItems);
   }
 
-  filteredItems(value) {
+  filteredItems(value): Observable <TodoItem[]> {
     let filteredTodos: TodoItem[] = [];
-try {
-    if(value) {
-
       filteredTodos = this.TodoItems.filter(todo => {
 
         if (value.all === true) {
@@ -84,13 +87,6 @@ try {
           return true 
         }
       })
-
-    }
-    } catch (error) {
-      console.log(error)
-    }
-    if(this.filteredItems != null) {
-      return filteredTodos;
-    }
+      return of(filteredTodos);
   }
 }

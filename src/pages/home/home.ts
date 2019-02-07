@@ -40,9 +40,15 @@ export class HomePage {
   ionViewDidEnter() {
     this.getTodos();
   }
+
+  getTodosService(): void {
+    this.todoService.injectTodos()
+      .subscribe(items => this.items = items)
+  }
+
  async getTodos() {
   await this.todoService.getTodoItems();
-    this.items = this.todoService.filteredItems(this.filter);  
+   this.todoService.filteredItems(this.filter).subscribe(todos => this.items = todos);  
    }
   
   goToAddTodo(): void{
@@ -103,7 +109,7 @@ export class HomePage {
       this.filter.medium = false;
       this.filter.high = false;
     }
-    this.items = this.todoService.filteredItems(this.filter)
+    this.todoService.filteredItems(this.filter).subscribe(items => this.items = items)
   }
   check() {
     if (this.filter.low === true || this.filter.medium === true || this.filter.high === true) {
@@ -112,7 +118,7 @@ export class HomePage {
     if(this.filter.low === false && this.filter.medium === false && this.filter.high === false) {
       this.filter.all = true;
     }
-    this.items = this.todoService.filteredItems(this.filter)
+    this.todoService.filteredItems(this.filter).subscribe(items => this.items = items)
   }
 
 }
